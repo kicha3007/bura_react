@@ -1,12 +1,13 @@
 import React from "react";
 
 import TodoListItem from "../TodoListItem";
+import "./TodoList.css";
 
 const TodoList = ({todos}) => {
 
     const elements = todos.map((item) => {
         return (
-            <li key={item.id}>
+            <li key={item.id} className="list-group-item">
                 <TodoListItem {...item}/>
             </li>
             )
@@ -14,7 +15,7 @@ const TodoList = ({todos}) => {
     });
 
     return (
-        <ul>
+        <ul className="list-group todo-list">
             {elements}
 
         </ul>
