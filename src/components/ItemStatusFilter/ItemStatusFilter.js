@@ -7,9 +7,27 @@ export default class ItemStatusFilter extends Component {
         return (
             <div className="btn-group">
 
-                <button type="button" className="btn btn-info">All</button>
-                <button type="button" className="btn btn-outline-secondary">Active</button>
-                <button type="button" className="btn btn-outline-secondary">Done</button>
+                <button
+                    type="button"
+                    className="btn btn-info"
+                    onClick={this.props.onAllShow}
+                >
+                    All
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={this.props.onActiveShow}
+                >
+                    Active
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={this.props.onDoneShow}
+                >
+                    Done
+                </button>
 
             </div>
         );

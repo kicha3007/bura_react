@@ -16,7 +16,8 @@ class App extends Component {
             this.createTodoItem("Drink Coffee"),
             this.createTodoItem("Make Awesome App"),
             this.createTodoItem("Have a lunch")
-        ]
+        ],
+        term: ""
     };
 
     createTodoItem(text) {
@@ -48,7 +49,7 @@ class App extends Component {
 
     addItem = (text) => {
 
-        const newItem = this.createTodoItem("Hello world");
+        const newItem = this.createTodoItem(text);
 
 
         this.setState(({todoData}) => {
@@ -102,28 +103,74 @@ class App extends Component {
 
     };
 
+    iterationItemDisplay = (array, display) => {
+
+        const doneItems = document.querySelectorAll(array);
+
+        doneItems.forEach(function (item, indx) {
+            item.parentNode.style.display = display;
+        });
+    }
+
+    onActiveShow = () => {
+        this.iterationItemDisplay(".todo-list-item", "block");
+        this.iterationItemDisplay(".todo-list-item.done", "none");
+    }
+
+    onDoneShow = () => {
+        this.iterationItemDisplay(".todo-list-item", "block");
+        this.iterationItemDisplay(".todo-list-item:not(.done)", "none");
+    }
+
+    onAllShow = () => {
+        this.iterationItemDisplay(".todo-list-item", "block");
+    }
+
+    search(items, term) {
+        if (term.length == 0){
+            return items;
+        }
+
+        return items.filter((item) => {
+            return item.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
+        });
+
+    }
+
+    onSearchChenage = (term) => {
+        this.setState({term});
+    };
 
     render() {
 
-        const { todoData } = this.state;
+        const { todoData, term } = this.state;
 
-        const doneCount = todoData
-                              .filter((el) => el.done).length;
+        const visibliItems = this.search(todoData, term);
+
+        const doneCount = todoData.filter((el) => el.done).length;
         const todoCount = todoData.length - doneCount;
 
 
         return (
+            
+
             <div className="todo-app">
                 <AppHeader
                 toDo={todoCount}
                 done={doneCount}
                 />
                 <div className="search-panel d-flex">
-                    <SearchPanel/>
-                    <ItemStatusFilter/>
+                    <SearchPanel
+                        onSearchChenage={this.onSearchChenage}
+                    />
+                    <ItemStatusFilter
+                    onActiveShow={this.onActiveShow}
+                    onDoneShow={this.onDoneShow}
+                    onAllShow={this.onAllShow}
+                    />
                 </div>
                 <TodoList
-                    todos={todoData}
+                    todos={visibliItems}
                     onDeleted={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
                     onToggleDone={this.onToggleDone}
