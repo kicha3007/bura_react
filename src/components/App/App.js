@@ -104,29 +104,6 @@ class App extends Component {
 
     };
 
-    iterationItemDisplay = (array, display) => {
-
-        const doneItems = document.querySelectorAll(array);
-
-        doneItems.forEach(function (item, indx) {
-            item.parentNode.style.display = display;
-        });
-    }
-
-    onActiveShow = () => {
-        this.iterationItemDisplay(".todo-list-item", "block");
-        this.iterationItemDisplay(".todo-list-item.done", "none");
-    }
-
-    onDoneShow = () => {
-        this.iterationItemDisplay(".todo-list-item", "block");
-        this.iterationItemDisplay(".todo-list-item:not(.done)", "none");
-    }
-
-    onAllShow = () => {
-        this.iterationItemDisplay(".todo-list-item", "block");
-    }
-
     search(items, term) {
         if (term.length == 0){
             return items;
