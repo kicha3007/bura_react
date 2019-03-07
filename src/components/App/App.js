@@ -17,7 +17,8 @@ class App extends Component {
             this.createTodoItem("Make Awesome App"),
             this.createTodoItem("Have a lunch")
         ],
-        term: ""
+        term: "",
+        filter: "all"
     };
 
     createTodoItem(text) {
@@ -141,11 +142,32 @@ class App extends Component {
         this.setState({term});
     };
 
+    onFilterChange = (filter) => {
+        this.setState({filter});
+    }
+
+    filter(items, filter) {
+        switch(filter) {
+            case "all":
+                return items;
+            case "active":
+                return items.filter((el) => {
+                    return !el.done;
+                })
+            case "done":
+                return items.filter((el) => {
+                    return el.done;
+                })
+            default:
+                return items;
+        }
+    }
+
     render() {
 
-        const { todoData, term } = this.state;
+        const { todoData, term, filter } = this.state;
 
-        const visibliItems = this.search(todoData, term);
+        const visibliItems = this.filter(this.search(todoData, term), filter);
 
         const doneCount = todoData.filter((el) => el.done).length;
         const todoCount = todoData.length - doneCount;
@@ -164,9 +186,8 @@ class App extends Component {
                         onSearchChenage={this.onSearchChenage}
                     />
                     <ItemStatusFilter
-                    onActiveShow={this.onActiveShow}
-                    onDoneShow={this.onDoneShow}
-                    onAllShow={this.onAllShow}
+                    filter={filter}
+                    onFilterChange={this.onFilterChange}
                     />
                 </div>
                 <TodoList
